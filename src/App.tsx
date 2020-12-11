@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+import TodoList from './TodosList';
+import NewTodo from './NewTodo';
+
+const App: React.FC = () => {
+
+  // const todos = [{ id: 'ts1', text: 'Finish this course'}, { id: 'ts2', text: 'Finish eating'}];
+  const [todos, setTodos] = useState<{id: string, text: string}[]>([]); // useState's default type is NEVER, so we should define exact type!!
+
+  const todoAddHandler = (text: string) => {
+    // create a new object
+    const newElement = {
+      id: Math.random().toString(),
+      text: text
+    }
+    // save to state
+    setTodos(prevState => ([...prevState, newElement]))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NewTodo addTodo={todoAddHandler} />
+      <TodoList items={todos} />
     </div>
   );
 }
